@@ -1,82 +1,88 @@
+<?php
+/*
+
+UserFrosting Version: 0.2.2
+By Alex Weissman
+Copyright (c) 2014
+
+Based on the UserCake user management system, v2.0.2.
+Copyright (c) 2009-2012
+
+UserFrosting, like UserCake, is 100% free and open-source.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the 'Software'), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+
+require_once("models/config.php");
+
+// Public page
+
+setReferralPage(getAbsoluteDocumentPath(__FILE__));
+
+//Forward the user to their default page if he/she is already logged in
+if(isUserLoggedIn()) {
+	addAlert("warning", "You're already logged in!");
+    header("Location: account");
+	exit();
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>Static Top Navbar Example for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="navbar-static-top.css" rel="stylesheet">
-
-  </head>
+  <?php
+	echo renderTemplate("head.html", array("#SITE_ROOT#" => SITE_ROOT, "#SITE_TITLE#" => SITE_TITLE, "#PAGE_TITLE#" => "Welcome to CTFoods!"));
+  ?>
 
   <body>
-
-    <!-- Static navbar -->
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown" id="menuLogin">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
-            <div class="dropdown-menu" style="padding:17px;">
-              <form class="form-signin" id="formLogin"> 
-                <input name="username" id="username" type="email" class="form-control" placeholder="Email address" required> 
-                <input name="password" id="password" type="password" class="form-control" placeholder="Password" required><br>
-                <button type="submit" id="btnLogin" class="btn btn-block">Login</button>
-              </form>
-            </div>
-          </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-
     <div class="container">
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
-        </p>
+      <div class="header">
+        <ul class="nav nav-pills navbar pull-right">
+        </ul>
+        <h3 class="text-muted">CTFood</h3>
       </div>
+      <div class="jumbotron">
+        <h1>Welcome to CTFood!</h1>
+        <p class="lead">A group food ordering system for employees at Control-Tec.</p>
+		<div class="row">
+			<div class="col-sm-12">
+			  <a href="login.php" class="btn btn-success" role="button" value='Login'>Login</a>
+			</div>
+        </div>
+        <div class="jumbotron-links">
+        </div>
+      </div>	
+      <?php echo renderTemplate("footer.html"); ?>
 
     </div> <!-- /container -->
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../jquery-2.1.3.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
 
+<script>
+	$(document).ready(function() {
+		alertWidget('display-alerts');
+        // Load navigation bar
+        $(".navbar").load("header-loggedout.php", function() {
+            $(".navbar .navitem-home").addClass('active');
+        });
+        // Load jumbotron links
+        $(".jumbotron-links").load("jumbotron_links.php");     
+	});
+</script>
